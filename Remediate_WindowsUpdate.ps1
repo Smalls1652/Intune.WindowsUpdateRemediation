@@ -224,6 +224,7 @@ function Invoke-WindowsUpdateInstall {
 
 try {
     Reset-WindowsUpdate
+    Invoke-WindowsUpdateInstall
     exit 0
 }
 catch {
