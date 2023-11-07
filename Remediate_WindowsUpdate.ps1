@@ -151,7 +151,7 @@ function Reset-WindowsUpdate {
     }
     
     $currentDateTime = [datetime]::Now.ToString("yyyyMMdd-HHmm")
-    $logPath = Join-Path -Path $env:SystemDrive -ChildPath "wupdate-remediate_$($currentDateTime).log"
+    $logPath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "wupdate-remediate_$($currentDateTime).log"
     
     $writeLogSplat = @{
         "LogPath"         = $logPath;
@@ -174,7 +174,7 @@ function Invoke-WindowsUpdateInstall {
     param()
 
     $currentDateTime = [datetime]::Now.ToString("yyyyMMdd-HHmm")
-    $logPath = Join-Path -Path $env:SystemDrive -ChildPath "wupdate-manualjob_$($currentDateTime).log"
+    $logPath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "wupdate-manualjob_$($currentDateTime).log"
 
     $writeLogSplat = @{
         "LogPath"         = $logPath;

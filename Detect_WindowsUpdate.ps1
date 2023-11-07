@@ -53,7 +53,7 @@ function Test-WindowsBuild {
     )
 
     $currentDateTime = [datetime]::Now.ToString("yyyyMMdd-HHmm")
-    $logPath = Join-Path -Path $env:SystemDrive -ChildPath "wupdate-currentbuild_$($currentDateTime).log"
+    $logPath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "wupdate-currentbuild_$($currentDateTime).log"
 
     $writeLogSplat = @{
         "LogPath"         = $logPath;
