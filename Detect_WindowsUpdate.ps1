@@ -126,9 +126,8 @@ function Test-WindowsBuild {
     }
 }
 
-$qualityUpdateBufferDays = 7
-
-$qualityUpdateTest = Test-WindowsBuild -QualityUpdateReleaseDateBuffer 7
+$qualityUpdateBufferDays = 14
+$qualityUpdateTest = Test-WindowsBuild -QualityUpdateReleaseDateBuffer $qualityUpdateBufferDays
 
 if ($qualityUpdateTest.IsOutdated) {
     Write-Host "Windows is outdated."
