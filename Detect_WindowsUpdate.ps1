@@ -111,15 +111,21 @@ function Test-WindowsBuild {
     $currentWindowsQualityUpdate = $currentWindowsFeatureUpdate.ReleaseBuilds | Where-Object { $PSItem.BuildNumber -eq $currentBuild }
     $currentWindowsQualityUpdateVersion = [version]::Parse("10.0.$($currentWindowsQualityUpdate.BuildNumber)")
 
+    Write-LogMessage @writeLogSplat -Message "Currently installed Windows build: $($currentWindowsQualityUpdateVersion.ToString())"
+
     $latestWindowsQualityUpdate = ($currentWindowsFeatureUpdate.ReleaseBuilds | Where-Object { $PSItem.IsPatchTuesdayRelease -eq $true })[0]
     $latestWindowsQualityUpdateVersion = [version]::Parse("10.0.$($latestWindowsQualityUpdate.BuildNumber)")
 
+    Write-LogMessage @writeLogSplat -Message "Latest available Windows build: $($latestWindowsQualityUpdateVersion.ToString())"
+
     if (($currentWindowsQualityUpdateVersion -lt $latestWindowsQualityUpdateVersion) -and ([System.DateTimeOffset]::Now -gt $latestWindowsQualityUpdate.ReleaseDate.AddDays($QualityUpdateReleaseDateBuffer))) {
+        Write-LogMessage @writeLogSplat -Level "Warn" -Message "Windows is outdated."
         return [pscustomobject]@{
             "IsOutdated" = $true;
         }
     }
     else {
+        Write-LogMessage @writeLogSplat -Message "Windows is currently up-to-date."
         return [pscustomobject]@{
             "IsOutdated" = $false;
         }
