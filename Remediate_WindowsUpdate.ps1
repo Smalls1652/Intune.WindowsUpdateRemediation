@@ -175,6 +175,7 @@ function Invoke-WindowsUpdateInstall {
 
     $currentDateTime = [datetime]::Now.ToString("yyyyMMdd-HHmm")
     $logPath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "wupdate-manualjob_$($currentDateTime).log"
+    $pswindowsupdateLogPath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "pswindowsupdate_$($currentDateTime).log"
 
     $writeLogSplat = @{
         "LogPath"         = $logPath;
@@ -217,7 +218,11 @@ function Invoke-WindowsUpdateInstall {
     }
 
     Write-LogMessage @writeLogSplat -Message "Running Windows Update job."
-    Get-WindowsUpdate -AcceptAll -Install -IgnoreReboot
+    Get-WindowsUpdate -AcceptAll -Install -IgnoreReboot -Verbose *>&1 "$($pswindowsupdateLogPath)"
+    $pswindowsUpdateLogs = Get-Content -Path $pswindowsupdateLogPath -Raw
+
+    Write-LogMessage @writeLogSplat -Message "PSWindowsUpdate log:"
+    Write-LogMessage @writeLogSplat -Message $pswindowsUpdateLogs
 
     Write-LogMessage @writeLogSplat -Message "Finished."
 }
